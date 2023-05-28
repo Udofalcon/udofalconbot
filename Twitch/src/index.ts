@@ -25,7 +25,6 @@ const TWITCH_ACCESS_TOKEN = oauth.getAccessToken(TWITCH_CLIENT_ID, TWITCH_CLIENT
 
 chat.connect(BOT_USERNAME, BOT_PASSWORD, BROADCASTER);
 
-
 const app = express();
 
 app.use(helmet());
