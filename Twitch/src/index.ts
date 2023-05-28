@@ -5,7 +5,6 @@ import helmet from "helmet";
 import { router } from "./router";
 import { oauth } from "./Services/oauth";
 import { chat } from "./Services/chat";
-import { bots } from "./Vendors/bots";
 
 dotenv.config();
 
