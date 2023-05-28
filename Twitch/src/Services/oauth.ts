@@ -3,7 +3,7 @@ import https from "https";
 import { RequestOptions } from "https";
 
 export const oauth = {
-    getAccessToken: (client_id: string, client_secret: string) => {
+    getAccessToken: (client_id: string, client_secret: string): Promise<any> => {
         return new Promise((resolve, reject) => {
             const options: RequestOptions = {    
                 hostname: 'id.twitch.tv',
