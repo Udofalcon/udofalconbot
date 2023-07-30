@@ -10,7 +10,7 @@ export const bots = {
         }
 
         return new Promise((resolve, reject) => {
-            const options: RequestOptions = {    
+            const options: RequestOptions = {
                 hostname: 'api.twitchinsights.net',
                 path: `/v1/bots/all`,
                 method: 'GET'
@@ -21,9 +21,9 @@ export const bots = {
                 res.on('data', d => {
                     data += d;
                 });
-    
+
                 res.on('end', () => {
-                    var bot_data: Array<any> = JSON.parse(data).bots;
+                    var bot_data: Array<any> = res.statusCode === 200 ? JSON.parse(data).bots : [];
 
                     bots.list = bot_data.map(bot => bot[0]);
 
@@ -32,7 +32,7 @@ export const bots = {
             };
 
             const req = https.request(options, callback);
-            
+
             req.on('error', e => {
                 reject(e);
             });

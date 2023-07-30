@@ -7,7 +7,8 @@
     "build": "rimraf ./build && tsc",
     "start:dev": "npx nodemon",
     "start": "npm run build && node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ngrok": "ngrok http -log=stdout 3001 > ./ngrok.log &"
   },
   "keywords": [],
   "author": "",

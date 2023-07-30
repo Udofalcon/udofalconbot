@@ -1,5 +1,6 @@
 export class Twitch_User {
     private username: string = '';
+    private id: string = '';
 
     constructor(username: string) {
         this.username = username;
@@ -7,5 +8,12 @@ export class Twitch_User {
 
     public getUsername(): string {
         return this.username;
+    }
+
+    public getId(): string {
+        return this.id;
+    }
+    public setId(id: string) {
+        this.id = id;
     }
 }

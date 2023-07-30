@@ -5,7 +5,7 @@ import { RequestOptions } from "https";
 export const oauth = {
     getAccessToken: (client_id: string, client_secret: string): Promise<any> => {
         return new Promise((resolve, reject) => {
-            const options: RequestOptions = {    
+            const options: RequestOptions = {
                 hostname: 'id.twitch.tv',
                 path: `/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`,
                 method: 'POST'
@@ -16,8 +16,9 @@ export const oauth = {
                 res.on('data', d => {
                     data += d;
                 });
-    
+
                 res.on('end', () => {
+                    console.log(JSON.parse(data));
                     resolve(JSON.parse(data).access_token);
                 });
             };
