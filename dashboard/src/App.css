@@ -1,0 +1,9 @@
+.App {
+  padding: 1em;
+}
+
+.Events {
+  border: 0.25em solid black;
+  height: 24em;
+  width: 80em;
+}
