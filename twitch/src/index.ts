@@ -9,7 +9,6 @@ const app = express();
 const server = createServer(app);
 
 app.get('/', (req, res) => {
-    console.log('twitch > GET /');
     res.send('<h1>Twitch API Wrapper</h1>');
 });
 

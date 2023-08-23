@@ -2,7 +2,8 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { readdir, readFile, watch } from 'fs';
-import { config } from 'dotenv'
+import { config } from 'dotenv';
+import cors from 'cors';
 
 config();
 
@@ -11,43 +12,54 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: `${process.env.DASHBOARD_URL}:${process.env.DASHBOARD_PORT}`
+        origin: `${process.env.REACT_APP_URL}:${process.env.REACT_APP_PORT}`
     }
 });
 const log_dir = `${__dirname}/../../logs`;
 
 io.on('connection', socket => {
-    socket.on('create-something', () => {
-        console.log('BFF reached!');
+    socket.on('log', () => {
+        console.log('log event');
     });
 });
 
+app.use(cors());
+
 app.get('/', (req, res) => {
-    console.log('bff > GET /');
     res.send('<h1>BFF</h1>');
+});
+
+app.get('/logs', (req, res) => {
+    get_logs((logs: string[]) => {
+        res.send(logs);
+    });
+});
+
+watch(log_dir, (eventType: string, filename: string | null) => {
+    get_logs(log);
 });
 
 server.listen(PORT, () => {
     console.log(`bff > listening on *:${PORT}`);
 });
 
-watch(log_dir, (eventType: string, filename: string | null) => {
+function log(msgs: string[]) {
+    io.emit('log', msgs);
+}
+
+function get_logs(cb: Function) {
     readdir(log_dir, {}, (err: NodeJS.ErrnoException | null, files: string[] | Buffer[]): void => {
         if (err) {
             throw err;
         }
 
-        read_next_log(files, []);
+        read_next_log(files, [], cb);
     });
-});
-
-function log(msgs: string[]) {
-    io.emit('log', msgs);
 }
 
-function read_next_log(arr: string[] | Buffer[], logs: string[][]) {
+function read_next_log(arr: string[] | Buffer[], logs: string[][], cb: Function) {
     if (arr.length === 0) {
-        return log(get_latest_logs(logs));
+        return cb(get_latest_logs(logs));
     }
 
     const next_file = arr.shift();
@@ -58,7 +70,7 @@ function read_next_log(arr: string[] | Buffer[], logs: string[][]) {
         }
 
         logs.push(data.toString().split('\n').filter(log => log));
-        read_next_log(arr, logs);
+        read_next_log(arr, logs, cb);
     });
 }
 

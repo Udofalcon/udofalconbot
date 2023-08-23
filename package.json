@@ -4,12 +4,14 @@
   "description": "Resources for https://www.twitch.tv/udofalcon",
   "main": "index.js",
   "scripts": {
-    "start": "bash start.sh"
+    "start:mw": "bash start_mw.sh",
+    "start:ui": "bash start_ui.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "pm2": "^5.3.0",

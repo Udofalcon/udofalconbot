@@ -2,8 +2,8 @@
   padding: 1em;
 }
 
-.Events {
+.LogEvents > pre {
   border: 0.25em solid black;
-  height: 24em;
+  min-height: 24em;
   width: 80em;
 }
