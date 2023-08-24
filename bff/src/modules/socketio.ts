@@ -14,7 +14,7 @@ export default class SocketIO {
             });
         }
 
-        return this.io;
+        return SocketIO.io;
     }
 
     public static initListeners() {
