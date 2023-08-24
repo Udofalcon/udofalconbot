@@ -1,27 +1,19 @@
 import express from 'express';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
 import { readdir, readFile, watch } from 'fs';
 import { config } from 'dotenv';
 import cors from 'cors';
+import SocketIO from './modules/socketio';
 
 config();
 
 const PORT = process.env.BFF_PORT;
 const app = express();
 const server = createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: `${process.env.REACT_APP_URL}:${process.env.REACT_APP_PORT}`
-    }
-});
 const log_dir = `${__dirname}/../../logs`;
 
-io.on('connection', socket => {
-    socket.on('log', () => {
-        console.log('log event');
-    });
-});
+const io = SocketIO.getIO(server);
+SocketIO.initListeners();
 
 app.use(cors());
 
