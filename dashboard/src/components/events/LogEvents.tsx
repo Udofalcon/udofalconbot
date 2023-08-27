@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SocketIO from '../modules/Socket';
+import SocketIO from '../../modules/Socket';
 
 export function LogEvents() {
     const [ getList, setList ] = useState([]);
@@ -16,7 +16,7 @@ export function LogEvents() {
     }, []);
 
     function getLogs() {
-        return fetch(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_BFF_PORT}/logs`)
+        fetch(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_BFF_PORT}/logs`)
             .then(response => {
                 return response.json();
             })
@@ -27,7 +27,7 @@ export function LogEvents() {
 
     function onLogEvent(value: any) {
         setList((): any => {
-            while (value.length >= 10) {
+            while (value.length >= 20) {
                 value.shift();
             }
 
