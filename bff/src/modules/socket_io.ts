@@ -19,9 +19,7 @@ export default class SocketIO {
 
     public static initListeners() {
         SocketIO.io.on('connection', (socket: any) => {
-            socket.on('log', () => {
-                console.log('log event');
-            });
+            console.log('SocketIO connected.');
         });
     }
 }
