@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import { LogEvents } from './components/events/LogEvents';
-import { TwitchChat } from './components/twitch/TwitchChat';
 import { TwitchChatEvents } from './components/events/TwitchChatEvents';
+import { TwitchChat } from './components/twitch/TwitchChat';
+import { TwitchVote } from './components/twitch/TwitchVote';
 
 import './App.css';
 
@@ -11,13 +13,14 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/twitch-chat" element={<TwitchChat />} />
           <Route path="/events" element={(
             <>
               <LogEvents />
               <TwitchChatEvents />
             </>
           )} />
+          <Route path="/twitch-chat" element={<TwitchChat />} />
+          <Route path="/twitch-vote" element={<TwitchVote />} />
           <Route path="*" element={<h2>Dashboard</h2>} />
         </Routes>
       </div>

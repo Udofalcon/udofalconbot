@@ -36,9 +36,56 @@ export function TwitchChat() {
     }
 
     function onChatEvent(value: any) {
-        console.log('Twitch Chat', JSON.parse(value));
+        const json = JSON.parse(value);
+        const message = json.message;
+
+        console.log('Twitch Chat', json);
+        json.message = [];
+
+        if (json.tags.emotes !== null) {
+            var emotes: any[] = [];
+
+            Object.keys(json.tags.emotes).forEach((emote: string) => {
+                json.tags.emotes[emote].forEach((range: any) => {
+                    const [ start, end ] = range.split('-');
+
+                    emotes.push({
+                        end: parseInt(end),
+                        emote,
+                        start: parseInt(start)
+                    });
+                });
+            });
+
+            emotes = emotes.sort((a, b) => a.start - b.start);
+
+            for (var i = 0; i < message.length; i++) {
+                if (emotes.length && i >= emotes[0].start && i <= emotes[0].end) {
+                    if (i === emotes[0].start) {
+                        json.message.push({ type: 'emote', value: `https://static-cdn.jtvnw.net/emoticons/v2/${emotes[0].emote}/default/light` })
+                    } else if (i === emotes[0].end) {
+                        emotes.shift();
+                    }
+                } else {
+                    var word = '';
+
+                    for (; i < message.length && message[i] !== ' '; i++) {
+                        word += message[i];
+                    }
+
+                    json.message.push({ type: 'text', value: word });
+                }
+
+                if (message[i] === ' ') {
+                    json.message.push({ type: 'whitespace' });
+                }
+            }
+        } else {
+            json.message.push({ type: 'text', value: message });
+        }
+
         setList((previous): any => {
-            return [ ...previous, JSON.parse(value) ];
+            return [ ...previous, json ];
         });
     }
 
@@ -60,7 +107,29 @@ export function TwitchChat() {
                             className='message'
                             style={{ borderColor: json.tags.color, borderStyle: 'solid', borderRadius: '0.25em', borderWidth: '0.25em' }}
                         >
-                            {json.message}
+                            {
+                                json.message.map((message: any) => {
+                                    if (message.type === 'text') {
+                                        return <span>{message.value}</span>;
+                                    } else if (message.type === 'emote') {
+                                        if (json.message.length === 1) {
+                                            // Big without text
+                                            return <img
+                                                className='large-img'
+                                                src={`${message.value}/3.0`}
+                                            ></img>;
+                                        } else {
+                                            // Small with text
+                                            return <img
+                                                className='small-img'
+                                                src={`${message.value}/1.0`}
+                                            ></img>;
+                                        }
+                                    } else if (message.type === 'whitespace') {
+                                        return <span>&nbsp;</span>;
+                                    }
+                                })
+                            }
                         </div>
                     </span>;
                 })

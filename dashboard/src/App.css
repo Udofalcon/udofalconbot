@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 html, body, #root, .App, .TwitchChat {
   height: 100%;
   width: 100%;
@@ -14,6 +19,7 @@ html, body, #root, .App, .TwitchChat {
 }
 
 .TwitchChat {
+  font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -32,6 +38,7 @@ html, body, #root, .App, .TwitchChat {
   animation-duration: 60s;
   animation-fill-mode: forwards;
   margin-left: 0.5em;
+  vertical-align: baseline;
 }
 
 .TwitchChat .display-name {
@@ -81,6 +88,20 @@ html, body, #root, .App, .TwitchChat {
 
 .TwitchChat .message {
   background-color: #FFFFFFCC;
+  padding-bottom: 0.2em;
+}
+
+.TwitchChat .message img {
+  position: relative;
+  vertical-align: middle;
+}
+
+.TwitchChat .message .small-img {
+  margin: -.5rem 0;
+}
+
+.TwitchChat .message .large-img {
+  margin: -.25rem;
 }
 
 .TwitchChat .display-name, .TwitchChat .message {
@@ -88,6 +109,8 @@ html, body, #root, .App, .TwitchChat {
   border-style: 'solid';
   border-width: 0.25em;
   padding-left: 0.25em;
+  padding-right: 0.25em;
+  padding-top: 0.2em;
 }
 
 @keyframes chat_animation {
