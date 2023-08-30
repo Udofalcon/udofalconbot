@@ -14,7 +14,7 @@ export function TwitchChat() {
             setList((previous: any[]): any => {
                 return previous.filter(message => {
                     // Animation takes 60 seconds. Should be off screen when this kicks off.
-                    return Date.now() - parseInt(message.tags['tmi-sent-ts']) <= 61 * 1000;
+                    return Date.now() - message.timeout <= 61 * 1000;
                 });
             });
         });
@@ -41,6 +41,7 @@ export function TwitchChat() {
 
         console.log('Twitch Chat', json);
         json.message = [];
+        json.timeout = Date.now();
 
         if (json.tags.emotes !== null) {
             var emotes: any[] = [];
@@ -89,13 +90,43 @@ export function TwitchChat() {
         });
     }
 
+    function sine(pct: number) {
+        return Math.sin(pct*Math.PI/2);
+    }
+
+    function lerp(start_value: number, end_value: number, pct: number) {
+        return start_value + (end_value - start_value) * pct;
+    }
+
+    function animate(json: any) {
+        const time_ratio = (Date.now() - json.timeout) / 1000 / 60;
+        const name_ratio = 1 / 100;
+
+        // Slide in
+        if (time_ratio < name_ratio) {
+            return lerp(-100, 0, sine(time_ratio / name_ratio));
+        }
+        // Stay open
+        else if (time_ratio < 1 - name_ratio) {
+            return 0;
+        }
+        // Slide out
+        else if (time_ratio < 1) {
+            return lerp(0, -100, sine((time_ratio - (1 - name_ratio)) / name_ratio));
+        }
+        // Done. Wait to be removed.
+        else {
+            return -100;
+        }
+    }
+
     return (
         <div className='TwitchChat'>
             {
-                getList.map((json: any) => {
+                getList.map((json: any, index: number, array: never[]): JSX.Element => {
                     return <span
                         className='message-wrapper'
-                        style={{ backgroundColor: json.tags.color, borderRadius: '0.25em', marginTop: '1em' }}
+                        style={{ backgroundColor: json.tags.color, borderRadius: '0.25em', marginTop: '1em', transform: `translatex(${animate(json)}vw)` }}
                     >
                         <div
                             className='display-name'

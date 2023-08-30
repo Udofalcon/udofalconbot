@@ -34,9 +34,6 @@ html, body, #root, .App, .TwitchChat {
   width: max-content;
   max-width: fit-content;
   min-height: fit-content;
-  animation-name: chat_animation;
-  animation-duration: 60s;
-  animation-fill-mode: forwards;
   margin-left: 0.5em;
   vertical-align: baseline;
 }
@@ -83,12 +80,15 @@ html, body, #root, .App, .TwitchChat {
     -0.10em -0.02em 0 #000,
     -0.10em -0.04em 0 #000,
     -0.10em -0.06em 0 #000,
-    -0.10em -0.08em 0 #000
+    -0.10em -0.08em 0 #000;
+  padding-top: 0.2em;
 }
 
 .TwitchChat .message {
   background-color: #FFFFFFCC;
-  padding-bottom: 0.2em;
+  padding-bottom: 0.35em;
+  padding-top: 0.25em;
+  /* @TODO: Figure out better padding or logic to have message be height + 0.2em top/bottom and adjust given images */
 }
 
 .TwitchChat .message img {
@@ -110,12 +110,4 @@ html, body, #root, .App, .TwitchChat {
   border-width: 0.25em;
   padding-left: 0.25em;
   padding-right: 0.25em;
-  padding-top: 0.2em;
-}
-
-@keyframes chat_animation {
-  0%   { transform: translatex(-100vw); }
-  3%   { transform: translatex(0); }
-  97%  { transform: translatex(0); }
-  100% { transform: translatex(-100vw); }
 }
