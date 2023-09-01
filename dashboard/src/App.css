@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 html, body, #root, .App, .TwitchChat {
@@ -36,6 +37,7 @@ html, body, #root, .App, .TwitchChat {
   min-height: fit-content;
   margin-left: 0.5em;
   vertical-align: baseline;
+  transform-origin: -100vw;
 }
 
 .TwitchChat .display-name {
