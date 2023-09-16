@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import SocketIO from '../../modules/Socket';
 
+import './TwitchChat.css';
+
 export function TwitchChat() {
     const [ getList, setList ] = useState([]);
     const socket = SocketIO.getSocket();
@@ -43,48 +45,42 @@ export function TwitchChat() {
         json.message = [];
         json.timeout = Date.now();
 
-        // @TODO: Bug exists with messages starting or ending with an emote. Width of the message box exceeds the containers.
+        var emotes: any[] = [];
 
-        if (json.tags.emotes !== null) {
-            var emotes: any[] = [];
+        Object.keys(json.tags.emotes || {}).forEach((emote: string) => {
+            json.tags.emotes[emote].forEach((range: any) => {
+                const [ start, end ] = range.split('-');
 
-            Object.keys(json.tags.emotes).forEach((emote: string) => {
-                json.tags.emotes[emote].forEach((range: any) => {
-                    const [ start, end ] = range.split('-');
-
-                    emotes.push({
-                        end: parseInt(end),
-                        emote,
-                        start: parseInt(start)
-                    });
+                emotes.push({
+                    end: parseInt(end),
+                    emote,
+                    start: parseInt(start)
                 });
             });
+        });
 
-            emotes = emotes.sort((a, b) => a.start - b.start);
+        emotes = emotes.sort((a, b) => a.start - b.start);
 
-            for (var i = 0; i < message.length; i++) {
-                if (emotes.length && i >= emotes[0].start && i <= emotes[0].end) {
-                    if (i === emotes[0].start) {
-                        json.message.push({ type: 'emote', value: `https://static-cdn.jtvnw.net/emoticons/v2/${emotes[0].emote}/default/light` })
-                    } else if (i === emotes[0].end) {
-                        emotes.shift();
-                    }
-                } else {
-                    var word = '';
+        for (var i = 0; i < message.length; i++) {
+            if (emotes.length && i >= emotes[0].start && i <= emotes[0].end) {
+                if (i === emotes[0].start) {
+                    json.message.push({ type: 'emote', value: `https://static-cdn.jtvnw.net/emoticons/v2/${emotes[0].emote}/default/light` })
+                } else if (i === emotes[0].end) {
+                    emotes.shift();
+                }
+            } else {
+                var word = '';
 
-                    for (; i < message.length && message[i] !== ' '; i++) {
-                        word += message[i];
-                    }
-
-                    json.message.push({ type: 'text', value: word });
+                for (; i < message.length && message[i] !== ' '; i++) {
+                    word += message[i];
                 }
 
-                if (message[i] === ' ') {
-                    json.message.push({ type: 'whitespace' });
-                }
+                json.message.push({ type: 'text', value: word });
             }
-        } else {
-            json.message.push({ type: 'text', value: message });
+
+            if (message[i] === ' ') {
+                json.message.push({ type: 'whitespace' });
+            }
         }
 
         setList((previous): any => {
@@ -126,35 +122,32 @@ export function TwitchChat() {
         <div className='TwitchChat'>
             {
                 getList.map((json: any, index: number, array: never[]): JSX.Element => {
-                    return <span
-                        className='message-wrapper'
-                        style={{ backgroundColor: json.tags.color, borderRadius: '0.25em', marginTop: '1em', transform: `rotate(${-animate(json)}deg)` }}
+                    return <div
+                        className='messageWrapper'
+                        style={{ backgroundColor: json.tags.color, borderColor: json.tags.color }}
                     >
-                        <div
-                            className='display-name'
-                            style={{ borderColor: json.tags.color, borderStyle: 'solid', borderRadius: '0.25em', borderWidth: '0.25em' }}
+                        <span
+                            className='displayName'
+                            style={{ backgroundColor: json.tags.color, borderColor: json.tags.color }}
                         >
                             {json.tags['display-name']}
-                        </div>
-                        <div
-                            className='message'
-                            style={{ borderColor: json.tags.color, borderStyle: 'solid', borderRadius: '0.25em', borderWidth: '0.25em' }}
-                        >
+                        </span>
+                        <div className='message'>
                             {
                                 json.message.map((message: any) => {
                                     if (message.type === 'text') {
-                                        return <span>{message.value}</span>;
+                                        return <p>{message.value}</p>;
                                     } else if (message.type === 'emote') {
                                         if (json.message.length === 1) {
                                             // Big without text
                                             return <img
-                                                className='large-img'
+                                                className='largeImg'
                                                 src={`${message.value}/3.0`}
                                             ></img>;
                                         } else {
                                             // Small with text
                                             return <img
-                                                className='small-img'
+                                                className='smallImg'
                                                 src={`${message.value}/1.0`}
                                             ></img>;
                                         }
@@ -164,7 +157,7 @@ export function TwitchChat() {
                                 })
                             }
                         </div>
-                    </span>;
+                    </div>;
                 })
             }
         </div>
