@@ -88,33 +88,28 @@ export function TwitchChat() {
         });
     }
 
-    function sine(pct: number) {
-        return Math.sin(pct*Math.PI/2);
-    }
-
     function lerp(start_value: number, end_value: number, pct: number) {
         return start_value + (end_value - start_value) * pct;
     }
 
     function animate(json: any) {
         const time_ratio = (Date.now() - json.timeout) / 1000 / 60;
-        const name_ratio = 3 / 100;
+        const fade_ratio = 1 / 60;
 
-        // Slide in
-        if (time_ratio < name_ratio) {
-            return lerp(-180, 0, sine(time_ratio / name_ratio));
+        // Fade in
+        if (time_ratio < fade_ratio) {
+            return lerp(0, 1, time_ratio / fade_ratio);
         }
-        // Stay open
-        else if (time_ratio < 1 - name_ratio) {
-            return 0;
+        // Full opacity
+        else if (time_ratio < 1 - fade_ratio) {
+            return 1;
         }
-        // Slide out
+        // Fade out
         else if (time_ratio < 1) {
-            return lerp(0, 180, sine((time_ratio - (1 - name_ratio)) / name_ratio));
-        }
-        // Done. Wait to be removed.
-        else {
-            return 180;
+            return lerp(1, 0, (time_ratio - (1 - fade_ratio)) / fade_ratio)
+        // No opacity; Wait to be removed
+        } else {
+            return 0;
         }
     }
 
@@ -124,7 +119,7 @@ export function TwitchChat() {
                 getList.map((json: any, index: number, array: never[]): JSX.Element => {
                     return <div
                         className='messageWrapper'
-                        style={{ backgroundColor: json.tags.color, borderColor: json.tags.color }}
+                        style={{ backgroundColor: json.tags.color, borderColor: json.tags.color, opacity: animate(json), maxHeight: `${animate(json) * 100}%` }}
                     >
                         <span
                             className='displayName'
