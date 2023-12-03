@@ -113,17 +113,31 @@ export function TwitchChat() {
         }
     }
 
+    function setColor(json: any) {
+        const color = json.tags.color || '#FFFFFF';
+        const _t = Math.round(json.timeout / 1000) % 360;
+        const r = _t / 360 * 2 * Math.PI;
+        const g = (_t + 120) / 360 * 2 * Math.PI;
+        const b = (_t + 240) / 360 * 2 * Math.PI;
+        const _c = [color.substring(1, 3), color.substring(3, 5), color.substring(5, 7)]
+            .map(h => parseInt(h, 16));
+        const [_r, _g, _b] = [255 * Math.cos(r), 255 * Math.cos(g), 255 * Math.cos(b)]
+            .map((n, i) => Math.round((Math.abs(n) + _c[i]) / 2).toString(16).padStart(2, '0'));
+
+        return `#${_r}${_g}${_b}`;
+    }
+
     return (
         <div className='TwitchChat'>
             {
                 getList.map((json: any, index: number, array: never[]): JSX.Element => {
                     return <div
                         className='messageWrapper'
-                        style={{ backgroundColor: json.tags.color, borderColor: json.tags.color, opacity: animate(json), maxHeight: `${animate(json) * 100}%` }}
+                        style={{ backgroundColor: setColor(json), borderColor: setColor(json), opacity: animate(json), maxHeight: `${animate(json) * 100}%` }}
                     >
                         <span
                             className='displayName'
-                            style={{ backgroundColor: json.tags.color, borderColor: json.tags.color }}
+                            style={{ backgroundColor: setColor(json), borderColor: setColor(json) }}
                         >
                             {json.tags['display-name']}
                         </span>
