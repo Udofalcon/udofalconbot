@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import { ImplicitGrantFlow } from './components/auth/ImplicitGrantFlow';
 import { LogEvents } from './components/events/LogEvents';
 import { TwitchChatEvents } from './components/events/TwitchChatEvents';
 import { TwitchChat } from './components/twitch/TwitchChat';
@@ -13,6 +14,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
+          <Route path="/auth" element={<ImplicitGrantFlow />} />
           <Route path="/events" element={(
             <>
               <LogEvents />
