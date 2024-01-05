@@ -21,16 +21,16 @@ async function main() {
     app.get('/', (req, res) => {
         res.send('<h1>Twitch API Wrapper</h1>');
     });
-    
+
     client.connect();
-    
+
     client.on('message', (channel, tags, message, self) => {
         console.log(`twitch > ${tags['display-name']}: ${message}`);
         const post_data: any = JSON.stringify({
             tags,
             message
         });
-    
+
         const req = request({
             hostname: `${process.env.REACT_APP_URL}`.replace('http://', ''),
             path: '/chat',
@@ -41,25 +41,25 @@ async function main() {
             }
         }, res => {
             var data = '';
-    
+
             res.on('data', d => {
                 data += d;
             });
         });
-    
+
         req.on('error', e => {
             console.error('twitch > bff error', e);
         });
-    
+
         req.write(post_data);
         req.end();
-    
+
         if (message === 'Ping') {
             console.log(message, channel);
             client.say(channel, 'Pong');
         }
     });
-    
+
     server.listen(PORT, () => {
         console.log(`twitch > listening on *:${PORT}`);
     });
