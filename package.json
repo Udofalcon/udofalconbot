@@ -1,0 +1,31 @@
+{
+  "name": "stream",
+  "version": "1.0.0",
+  "description": "Resources for https://www.twitch.tv/udofalcon",
+  "main": "index.js",
+  "scripts": {
+    "start:mw": "bash start_mw.sh",
+    "start:ui": "bash start_ui.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "pm2": "^5.3.0",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.5.1",
+    "@types/tmi.js": "^1.8.3",
+    "nodemon": "^3.0.1",
+    "rimraf": "^5.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

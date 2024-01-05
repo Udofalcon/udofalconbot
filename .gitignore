@@ -105,3 +105,9 @@ dist
 
 # Typescript build output
 build
+*.js
+bff/tsconfig.json
+twitch/tsconfig.json
+
+# Old code
+*_old/

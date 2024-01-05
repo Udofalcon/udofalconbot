@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+html, body, #root, .App, .TwitchChat {
+  height: 100%;
+  width: 100%;
+}
+
+.App .LogEvents, .App .TwitchChatEvents {
+  padding: 1em;
+}
+
+.LogEvents > pre, .TwitchChatEvents > pre {
+  border: 0.25em solid black;
+  min-height: 24em;
+  width: 80em;
+}
