@@ -10,11 +10,12 @@ export function ImplicitGrantFlow() {
     }, []);
 
     function getParameters() {
-        console.log(process.env);
+        const scope = ['chat:read', 'chat:edit', 'channel:moderate', 'moderation:read', 'moderator:manage:banned_users'];
+
         return 'response_type=token' +
             `&client_id=${process.env.REACT_APP_TWITCH_CLIENT_ID}` +
             '&redirect_uri=http://localhost:3000/auth' +
-            '&scope=chat%3Aread+chat%3Aedit';
+            `&scope=${scope.join('+')}`;
     }
 
     return (<a href={"https://id.twitch.tv/oauth2/authorize?" + getParameters()}>Connect with Twitch</a>);
