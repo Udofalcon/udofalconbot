@@ -3,6 +3,8 @@ import { createServer, request } from 'http';
 import { config } from 'dotenv';
 import tmi from 'tmi.js';
 import https from 'https';
+import Users from './modules/users';
+import Moderation from './modules/moderation';
 
 config();
 main();
@@ -14,7 +16,7 @@ async function main() {
     const client = new tmi.Client({
         identity: {
             username: 'udofalconbot',
-            password: `oauth:${process.env.TWITCH_IMPLICIT_GRANT_TOKEN}`
+            password: `oauth:${process.env.TWITCH_CHAT_TOKEN}`
         },
         channels: [ 'udofalcon' ]
     });
@@ -64,57 +66,4 @@ async function main() {
     server.listen(PORT, () => {
         console.log(`twitch > listening on *:${PORT}`);
     });
-
-    const options1 = {
-        hostname: 'api.twitch.tv',
-        path: '/helix/users?login=udofalcon',
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${process.env.TWITCH_IMPLICIT_GRANT_TOKEN}`,
-            'Client-Id': process.env.TWITCH_CLIENT_ID
-        }
-    };
-
-    const req1 = https.request(options1, res1 => {
-        var data1 = '';
-
-        res1.on('data', d => {
-            data1 += d;
-        });
-
-        res1.on('end', () => {
-            const broadcaster_id = JSON.parse(data1).data[0].id;
-            console.log('broadcaster id', broadcaster_id);
-            const options2 = {
-                hostname: 'api.twitch.tv',
-                path: `/helix/moderation/banned?broadcaster_id=${broadcaster_id}`,
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${process.env.TWITCH_IMPLICIT_GRANT_TOKEN}`,
-                    'Client-Id': process.env.TWITCH_CLIENT_ID
-                }
-            };
-            const req2 = https.request(options2, res2 => {
-                var data2 = '';
-
-                res2.on('data', d => {
-                    data2 += d;
-                });
-
-                res2.on('end', () => {
-                    console.log(JSON.parse(data2));
-                });
-            });
-
-            req2.on('error', e => {
-                console.error(e);
-            });
-            req2.end();
-        });
-    });
-
-    req1.on('error', e => {
-        console.error(e);
-    });
-    req1.end();
 }
