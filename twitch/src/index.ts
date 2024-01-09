@@ -63,6 +63,14 @@ async function main() {
         }
     });
 
+    client.on('join', (channel, username, self) => {
+        console.log(`twitch > join > ${username}`);
+    });
+
+    client.on('part', (channel, username, self) => {
+        console.log(`twitch > part > ${username}`);
+    });
+
     server.listen(PORT, () => {
         console.log(`twitch > listening on *:${PORT}`);
     });
