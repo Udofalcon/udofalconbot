@@ -7,6 +7,7 @@ export default class BotHandler {
     constructor() {}
 
     private static async makeBotList(): Promise<void> {
+        console.log(`twitch > makeBotList`);
         const options = {
             hostname: 'api.twitchinsights.net',
             path: '/v1/bots/all',

@@ -101,6 +101,7 @@ export default class Moderation {
      * }>
      */
     public static async banUser(broadcaster_id: string, moderator_id: string, user_id: string, duration?: Number, reason?: string): Promise<any> {
+        console.log(`twitch > banUser > ${user_id}`);
         function parameters() {
             var arr: Array<string> = [];
 
@@ -158,6 +159,7 @@ export default class Moderation {
      * @param user_id 
      */
     public static async unbanUser(broadcaster_id: string, moderator_id: string, user_id: string): Promise<void> {
+        console.log(`twitch > unbanUser > ${user_id}`);
         function parameters() {
             var arr: Array<string> = [];
 
