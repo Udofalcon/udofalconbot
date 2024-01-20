@@ -25,6 +25,8 @@ export default class Users {
      * }>
      */
     public static async getUsers(id?: Array<string> | string, login?: Array<string> | string): Promise<any> {
+        console.log(`twitch > getUsers > ${id} ${login}`);
+
         function parameters() {
             var arr: Array<string> = [];
 

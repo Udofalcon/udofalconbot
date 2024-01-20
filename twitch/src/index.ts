@@ -2,7 +2,6 @@ import express from 'express';
 import { createServer, request } from 'http';
 import { config } from 'dotenv';
 import tmi from 'tmi.js';
-import https from 'https';
 import Users from './modules/users';
 import Moderation from './modules/moderation';
 import BotHandler from './modules/bots_handler';
@@ -21,7 +20,7 @@ async function main() {
         },
         channels: [ 'udofalcon' ]
     });
-    const broadcaster = (await Users.getUsers('udofalcon'))[0];
+    const broadcaster = (await Users.getUsers(undefined, 'udofalcon')).data[0];
 
     app.get('/', (req, res) => {
         res.send('<h1>Twitch API Wrapper</h1>');
@@ -33,7 +32,9 @@ async function main() {
         console.log(`twitch > ${tags['display-name']}: ${message}`);
 
         if (await BotHandler.isBot(tags['display-name']!)) {
-            return Moderation.banUser(broadcaster.id, broadcaster.id, tags['display-name']!);
+            const user_id = (await Users.getUsers(undefined, tags['display-name']!)).data[0].id;
+
+            return Moderation.banUser(broadcaster.id, broadcaster.id, user_id, undefined, 'Known bot');
         }
 
         const post_data: any = JSON.stringify({
@@ -74,7 +75,9 @@ async function main() {
         console.log(`twitch > join > ${username}`);
 
         if (await BotHandler.isBot(username)) {
-            return Moderation.banUser(broadcaster.id, broadcaster.id, username);
+            const user_id = (await Users.getUsers(undefined, username)).data[0].id;
+
+            return Moderation.banUser(broadcaster.id, broadcaster.id, user_id, undefined, 'Known bot');
         }
     });
 
