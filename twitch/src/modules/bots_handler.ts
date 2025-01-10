@@ -3,6 +3,7 @@ import https from 'https';
 export default class BotHandler {
     private static bot_list: Array<string> = new Array<string>();
     private static last_update: Date = new Date(0);
+    private static api_call?: Promise<void>;
 
     constructor() {}
 
@@ -14,7 +15,7 @@ export default class BotHandler {
             method: 'GET'
         };
 
-        return new Promise((resolve, reject) => {
+        this.api_call = this.api_call || new Promise((resolve, reject) => {
             var data = '';
 
             const req = https.request(options, res => {
@@ -23,8 +24,10 @@ export default class BotHandler {
                 });
 
                 res.on('end', () => {
+                    console.log(`twitch > makeBotList > done`);
                     this.last_update = new Date();
                     this.bot_list = JSON.parse(data).bots;
+                    delete this.api_call;
                     resolve();
                 })
             });
@@ -35,6 +38,8 @@ export default class BotHandler {
             });
             req.end();
         });
+
+        return this.api_call;
     }
 
     private static async getBots(): Promise<Array<string>> {
