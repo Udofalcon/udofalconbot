@@ -105,3 +105,11 @@
   border-bottom-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em;
 }
+
+.join {
+  background-color: #32CD32;
+}
+
+.part {
+  background-color: #FF4040;
+}

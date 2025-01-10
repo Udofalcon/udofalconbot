@@ -1,4 +1,3 @@
-# stream
 Resources for https://www.twitch.tv/udofalcon
 
 New submodules:

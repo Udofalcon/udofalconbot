@@ -3,6 +3,71 @@ import SocketIO from '../../modules/Socket';
 
 import './TwitchChat.css';
 
+export function TwitchChatter() {
+    const socket = SocketIO.getSocket();
+    const [ getUsers, setUsers ] = useState(new Array<any>());
+
+    useEffect(() => {
+        socket.on('chatEvent', onChatterEvent);
+
+        const update = setInterval(() => {
+        }, 1000);
+
+        return () => {
+            socket.off('chatEvent', onChatterEvent);
+            clearInterval(update);
+        };
+    });
+
+    function onChatterEvent(value: string): void {
+        let { event, username } = JSON.parse(value);
+
+        setUsers((users: any[]) => {
+            let curr = users.find(x => x.username === username);
+            let next = curr ? {
+                ...curr,
+                type: (event === 'bot' || curr.type === 'bot') ? 'bot' : (event === 'chat' || curr.type === 'chat') ? 'chat' : 'lurk',
+                className: (event === 'join' || event === 'part') ? event : curr.className
+            } : {
+                username,
+                type: (event === 'join' || event === 'part') ? 'lurk' : event,
+                className: (event === 'join' || event === 'part') ? event : ''
+            };
+
+            console.log(username, curr, next);
+
+            return [ ...users.filter(x => x.username !== username), next ];
+        });
+    }
+
+    return (<div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div>
+            <h1>Chatters</h1>
+            {
+                getUsers.filter((user: any) => user.type === 'chat').map((user: any) => {
+                    return <p className={user.className}>{user.username}</p>;
+                })
+            }
+        </div>
+        <div>
+            <h1>Lurkers</h1>
+            {
+                getUsers.filter((user: any) => user.type === 'lurk').map((user: any) => {
+                    return <p className={user.className}>{user.username}</p>;
+                })
+            }
+        </div>
+        <div>
+            <h1>Bots</h1>
+            {
+                getUsers.filter((user: any) => user.type === 'bot').map((user: any) => {
+                    return <p className={user.className}>{user.username}</p>;
+                })
+            }
+        </div>
+    </div>);
+}
+
 export function TwitchChat() {
     const [ getList, setList ] = useState([]);
     const socket = SocketIO.getSocket();
