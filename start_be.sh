@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Pre scripts
-npm update
-pm2 update
-pm2 install typescript
+# npm update
+# pm2 update
+# pm2 install typescript
 
 # Set up Backends
 modules=(

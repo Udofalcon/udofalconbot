@@ -17,3 +17,8 @@ Cold reloading:
 Creating production builds:
 
 `npm install --save-dev rimraf`
+
+<!-- Setting up DB
+
+`sudo apt-get install sqlite3`
+`sqlite3 udobot.db` -->

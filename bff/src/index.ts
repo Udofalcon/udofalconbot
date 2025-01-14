@@ -40,6 +40,7 @@ async function main() {
 
     app.post('/chat', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });
@@ -52,6 +53,7 @@ async function main() {
 
     app.post('/chatter', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });
@@ -65,6 +67,7 @@ async function main() {
 
     app.put('/timer', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });
@@ -77,6 +80,7 @@ async function main() {
 
     app.put('/leaderboard', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });

@@ -4,8 +4,10 @@
   "description": "Resources for https://www.twitch.tv/udofalcon",
   "main": "index.js",
   "scripts": {
+    "start:be": "bash start_be.sh",
     "start:mw": "bash start_mw.sh",
-    "start:ui": "bash start_ui.sh"
+    "start:ui": "bash start_ui.sh",
+    "stop": "bash stop_pm2.sh"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
     "pm2": "^5.3.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "sqlite3": "^5.1.7",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
