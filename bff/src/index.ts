@@ -91,6 +91,30 @@ async function main() {
         });
     });
 
+    app.get('/games', (req, res) => {
+        fetch(`${process.env.REACT_APP_URL}:${process.env.DB_API_PORT}/games`)
+            .then(async (value: Response) => {
+                res.json(await value.json());
+                res.end();
+            });
+    });
+
+    app.post('/game', (req, res) => {
+        var body = '';
+
+        req.on('data', data => {
+            body += Buffer.from(data, 'utf16le').toString();
+        });
+
+        req.on('end', () => {
+            fetch(`${process.env.REACT_APP_URL}:${process.env.DB_API_PORT}/game`, {
+                method: 'POST',
+                headers: { 'Content_Type': 'application/json' },
+                body
+            });
+        });
+    });
+
     server.listen(PORT, () => {
         console.log(`bff > listening on *:${PORT}`);
     });

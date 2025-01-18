@@ -56,6 +56,7 @@ async function main() {
 
         req.on('end', async () => {
             let { id, name, state, started, last_played, image } = JSON.parse(body);
+            let game = await games.getGame(id);
 
             // Get Game
             if (true) { // If game exists
@@ -71,16 +72,17 @@ async function main() {
                 // Add user
             }
 
-            games.addGame(id, name, state, started, last_played, image);
+            // games.addGame(id, name, state, started, last_played, image);
 
-            res.json(200);
+            res.json(await games.getGame(id));
+            res.end();
         });
     });
 
     app.get('/games', async (req, res) => {
         let results = await games.getGames();
 
-        res.send(JSON.stringify(results));
+        res.json(results);
         res.end();
     });
 
