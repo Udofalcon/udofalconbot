@@ -83,6 +83,15 @@ export default class Games {
         });
     }
 
+    public deleteGame(id: string) {
+        this.db.run(`
+            DELETE from games
+            WHERE id = $id
+        `, id, (err: Error) => {
+            if (err) throw err;
+        });
+    }
+
     private calculateDay(timestamp: number): string {
         let date = new Date(timestamp);
         

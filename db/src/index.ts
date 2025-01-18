@@ -86,6 +86,12 @@ async function main() {
         res.end();
     });
 
+    app.delete('/game/:id', (req, res) => {
+        games.deleteGame(req.params.id);
+
+        res.json({ id: req.params.id });
+    });
+
     server.listen(PORT, () => {
         console.log(`db > listening on *:${PORT}`);
     });

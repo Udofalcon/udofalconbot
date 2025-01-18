@@ -115,6 +115,15 @@ async function main() {
         });
     });
 
+    app.delete('/game/:id', (req, res) => {
+        fetch(`${process.env.REACT_APP_URL}:${process.env.DB_API_PORT}/game/${req.params.id}`, {
+            method: 'DELETE'
+        }).then(async (value: Response) => {
+            res.json(await value.json());
+            res.end();
+        });
+    });
+
     server.listen(PORT, () => {
         console.log(`bff > listening on *:${PORT}`);
     });
