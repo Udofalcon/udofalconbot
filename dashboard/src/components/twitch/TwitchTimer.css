@@ -9,27 +9,27 @@
     padding-left: 2.5%;
 }
 
-.running {
+.TwitchTimer .running {
     color: #32CD32;
 }
 
-.average {
+.TwitchTimer .average {
     color: #D5AB09;
 }
 
-.running.last {
+.TwitchTimer .running.last {
     color: #FF4040;
 }
 
-.paused {
+.TwitchTimer .paused {
     color: #323232;
 }
 
-table {
+.TwitchTimer table {
     float: right;
 }
 
-h1 {
+.TwitchTimer h1 {
     text-align: right;
     padding-right: 1em;
     padding-top: 0.5em;

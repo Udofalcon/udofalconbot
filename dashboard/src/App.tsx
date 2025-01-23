@@ -5,7 +5,8 @@ import { ImplicitGrantFlow } from './components/auth/ImplicitGrantFlow';
 // import { LogEvents } from './components/events/LogEvents';
 import { TwitchChatEvents } from './components/events/TwitchChatEvents';
 import { TwitchChat, TwitchChatter } from './components/twitch/TwitchChat';
-import { TwitchCountdown } from './components/twitch/TwitchCountdown';
+// import { TwitchCountdown } from './components/twitch/TwitchCountdown';
+import { TwitchGames } from './components/twitch/TwitchGames';
 import { TwitchTimerController, TwitchTimer } from './components/twitch/TwitchTimer';
 import { TwitchVote } from './components/twitch/TwitchVote';
 
@@ -17,6 +18,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/auth" element={<ImplicitGrantFlow />} />
+          <Route path="/dashboard-chatters" element={<TwitchChatter />} />
+          <Route path="/dashboard-games" element={<TwitchGames />} />
           <Route path="/events" element={(
             <>
               {/* <LogEvents /> */}
@@ -24,8 +27,7 @@ function App() {
             </>
           )} />
           <Route path="/twitch-chat" element={<TwitchChat />} />
-          <Route path="/twitch-chatters" element={<TwitchChatter />} />
-          <Route path="/twitch-countdown" element={<TwitchCountdown />} />
+          {/* <Route path="/twitch-countdown" element={<TwitchCountdown />} /> */}
           <Route path="/twitch-timer-controller" element={<TwitchTimerController />} />
           <Route path="/twitch-timer" element={<TwitchTimer />} />
           <Route path="/twitch-vote" element={<TwitchVote />} />

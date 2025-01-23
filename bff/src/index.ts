@@ -40,6 +40,7 @@ async function main() {
 
     app.post('/chat', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });
@@ -52,6 +53,7 @@ async function main() {
 
     app.post('/chatter', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });
@@ -65,6 +67,7 @@ async function main() {
 
     app.put('/timer', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });
@@ -77,6 +80,7 @@ async function main() {
 
     app.put('/leaderboard', (req, res) => {
         var body = '';
+
         req.on('data', data => {
             body += Buffer.from(data, 'utf16le').toString();
         });
@@ -84,6 +88,39 @@ async function main() {
         req.on('end', () => {
             timer_events.handleLeaderboard(body);
             res.sendStatus(200);
+        });
+    });
+
+    app.get('/games', (req, res) => {
+        fetch(`${process.env.REACT_APP_URL}:${process.env.DB_API_PORT}/games`)
+            .then(async (value: Response) => {
+                res.json(await value.json());
+                res.end();
+            });
+    });
+
+    app.post('/game', (req, res) => {
+        var body = '';
+
+        req.on('data', data => {
+            body += Buffer.from(data, 'utf16le').toString();
+        });
+
+        req.on('end', () => {
+            fetch(`${process.env.REACT_APP_URL}:${process.env.DB_API_PORT}/game`, {
+                method: 'POST',
+                headers: { 'Content_Type': 'application/json' },
+                body
+            });
+        });
+    });
+
+    app.delete('/game/:id', (req, res) => {
+        fetch(`${process.env.REACT_APP_URL}:${process.env.DB_API_PORT}/game/${req.params.id}`, {
+            method: 'DELETE'
+        }).then(async (value: Response) => {
+            res.json(await value.json());
+            res.end();
         });
     });
 

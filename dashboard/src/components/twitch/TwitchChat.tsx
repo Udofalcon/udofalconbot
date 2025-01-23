@@ -10,12 +10,8 @@ export function TwitchChatter() {
     useEffect(() => {
         socket.on('chatEvent', onChatterEvent);
 
-        const update = setInterval(() => {
-        }, 1000);
-
         return () => {
             socket.off('chatEvent', onChatterEvent);
-            clearInterval(update);
         };
     });
 
